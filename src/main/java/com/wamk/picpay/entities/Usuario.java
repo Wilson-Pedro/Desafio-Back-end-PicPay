@@ -1,5 +1,6 @@
 package com.wamk.picpay.entities;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import com.wamk.picpay.enums.TipoUsuario;
@@ -17,19 +18,23 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String CPF;
+	private String nome;
+	private String cpf;
 	private String email;
 	private String senha;
+	private BigDecimal dinheiro;
 	private TipoUsuario tipoUsuario;
 	
 	public Usuario() {
 	}
 
-	public Usuario(Long id, String cPF, String email, String senha, TipoUsuario tipoUsuario) {
+	public Usuario(Long id, String nome, String cpf, String email, String senha, BigDecimal dinheiro, TipoUsuario tipoUsuario) {
 		this.id = id;
-		CPF = cPF;
+		this.nome = nome;
+		this.cpf = cpf;
 		this.email = email;
 		this.senha = senha;
+		this.dinheiro = dinheiro;
 		this.tipoUsuario = tipoUsuario;
 	}
 
@@ -41,12 +46,20 @@ public class Usuario {
 		this.id = id;
 	}
 
-	public String getCPF() {
-		return CPF;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setCPF(String cPF) {
-		CPF = cPF;
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public String getEmail() {
@@ -63,6 +76,14 @@ public class Usuario {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public BigDecimal getDinheiro() {
+		return dinheiro;
+	}
+
+	public void setDinheiro(BigDecimal dinheiro) {
+		this.dinheiro = dinheiro;
 	}
 
 	public TipoUsuario getTipoUsuario() {
