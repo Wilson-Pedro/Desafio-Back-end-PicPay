@@ -7,7 +7,7 @@ public class TransferenciaDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private BigDecimal valor;
-	private Long pagdor;
+	private Long pagador;
 	private Long receptor;
 	
 	public TransferenciaDTO() {
@@ -17,8 +17,8 @@ public class TransferenciaDTO implements Serializable{
 		return valor;
 	}
 
-	public Long getPagdor() {
-		return pagdor;
+	public Long getPagador() {
+		return pagador;
 	}
 
 	public Long getReceptor() {
