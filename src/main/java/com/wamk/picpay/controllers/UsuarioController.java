@@ -1,8 +1,6 @@
 package com.wamk.picpay.controllers;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,8 @@ import com.wamk.picpay.dtos.UsuarioInputDTO;
 import com.wamk.picpay.entities.Usuario;
 import com.wamk.picpay.services.UsuarioService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
@@ -35,12 +35,12 @@ public class UsuarioController {
 	
 	@GetMapping("/{usuarioId}")
 	public ResponseEntity<Usuario> findById(@PathVariable Long usuarioId){
-		Optional<Usuario> usuario = usuarioService.findById(usuarioId);
-		return ResponseEntity.ok(usuario.get());
+		Usuario usuario = usuarioService.findById(usuarioId);
+		return ResponseEntity.ok(usuario);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Usuario> criarUsario(@RequestBody UsuarioInputDTO usuarioDTO){
+	public ResponseEntity<Usuario> criarUsario(@Valid @RequestBody UsuarioInputDTO usuarioDTO){
 		var usuario = new Usuario();
 		BeanUtils.copyProperties(usuarioDTO, usuario);
 		usuarioService.save(usuario);
@@ -49,17 +49,7 @@ public class UsuarioController {
 	
 	@PostMapping("/transferencia")
 	public ResponseEntity<Object> transferir(@RequestBody TransferenciaDTO transferencia){
-		Long pagador = transferencia.getPagador();
-		Long receptor = transferencia.getReceptor();
-		var usuarioPagador = usuarioService.findById(pagador);
-		int comparacao = transferencia.getValor().compareTo(usuarioPagador.get().getDinheiro());
-		int saldoZero = usuarioPagador.get().getDinheiro().compareTo(BigDecimal.ZERO);
-		if(pagador == receptor) 
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body("Você não pode transferir dinheiro para você mesmo!");
-		else if(comparacao > 0 || saldoZero == 0) 
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body("Você não pode saldo suficiente para realizar essa transação!");
+		usuarioService.validarTransferencia(transferencia);
 		usuarioService.transferir(transferencia);
 		return ResponseEntity.ok("Transferência realizada com sucesso!");
 	}
