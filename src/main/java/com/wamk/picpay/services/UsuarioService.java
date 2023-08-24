@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.wamk.picpay.dtos.TransferenciaDTO;
 import com.wamk.picpay.entities.Usuario;
+import com.wamk.picpay.enums.TipoUsuario;
 import com.wamk.picpay.repositories.UsuarioRepository;
 import com.wamk.picpay.services.exceptions.EntidadeNaoEncontradaException;
+import com.wamk.picpay.services.exceptions.LojistaException;
 import com.wamk.picpay.services.exceptions.MesmoClienteException;
 import com.wamk.picpay.services.exceptions.SaldoInsuficienteException;
 
@@ -44,6 +46,9 @@ public class UsuarioService {
 			throw new MesmoClienteException("Você não pode transferir dinheiro para você mesmo!");
 		else if(comparacao > 0 || saldoZero == 0) 
 			throw new SaldoInsuficienteException("Você não possui saldo suficiente para realizar essa transação!");
+		else if(usuarioPagador.getTipoUsuario().equals(TipoUsuario.LOJISTA)) {
+			throw new LojistaException("Lojista não pode realizar transações!");
+		}
 	}
 
 	public void transferir(TransferenciaDTO transferencia) {

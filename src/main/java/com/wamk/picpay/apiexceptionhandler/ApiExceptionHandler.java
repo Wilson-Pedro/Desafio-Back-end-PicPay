@@ -20,6 +20,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.wamk.picpay.services.exceptions.EntidadeNaoEncontradaException;
+import com.wamk.picpay.services.exceptions.LojistaException;
 import com.wamk.picpay.services.exceptions.MesmoClienteException;
 import com.wamk.picpay.services.exceptions.SaldoInsuficienteException;
 
@@ -88,6 +89,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 
 		problema.setStatus(status.value());
 		problema.setTitulo("Você não possui saldo suficiente para realizar essa transação!");
+		problema.setDataHora(OffsetDateTime.now());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+	}
+	
+	@ExceptionHandler(LojistaException.class)
+	public ResponseEntity<Problema> lojistaException(){
+		
+		Problema problema = new Problema();
+		
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		problema.setStatus(status.value());
+		problema.setTitulo("Lojista não pode realizar transações!");
 		problema.setDataHora(OffsetDateTime.now());
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
