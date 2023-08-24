@@ -41,6 +41,7 @@ public class UsuarioController {
 	
 	@PostMapping
 	public ResponseEntity<Usuario> criarUsario(@Valid @RequestBody UsuarioInputDTO usuarioDTO){
+		usuarioService.validaCadastro(usuarioDTO);
 		var usuario = new Usuario();
 		BeanUtils.copyProperties(usuarioDTO, usuario);
 		usuarioService.save(usuario);

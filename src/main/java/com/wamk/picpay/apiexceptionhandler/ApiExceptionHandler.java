@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.wamk.picpay.services.exceptions.CpfJaCadastradoException;
+import com.wamk.picpay.services.exceptions.EmailJaCadastradoException;
 import com.wamk.picpay.services.exceptions.EntidadeNaoEncontradaException;
 import com.wamk.picpay.services.exceptions.LojistaException;
 import com.wamk.picpay.services.exceptions.MesmoClienteException;
 import com.wamk.picpay.services.exceptions.SaldoInsuficienteException;
+import com.wamk.picpay.services.exceptions.SenhaJaCadastradoException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
@@ -103,6 +106,48 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 
 		problema.setStatus(status.value());
 		problema.setTitulo("Lojista não pode realizar transações!");
+		problema.setDataHora(OffsetDateTime.now());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+	}
+	
+	@ExceptionHandler(CpfJaCadastradoException.class)
+	public ResponseEntity<Problema> cpfJaCadastradoException(){
+		
+		Problema problema = new Problema();
+		
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		problema.setStatus(status.value());
+		problema.setTitulo("Este cpf já foi cadastrado!");
+		problema.setDataHora(OffsetDateTime.now());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+	}
+	
+	@ExceptionHandler(EmailJaCadastradoException.class)
+	public ResponseEntity<Problema> emailJaCadastradoException(){
+		
+		Problema problema = new Problema();
+		
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		problema.setStatus(status.value());
+		problema.setTitulo("Este email já foi cadastrado!");
+		problema.setDataHora(OffsetDateTime.now());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+	}
+	
+	@ExceptionHandler(SenhaJaCadastradoException.class)
+	public ResponseEntity<Problema> senhaJaCadastradoException(){
+		
+		Problema problema = new Problema();
+		
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		problema.setStatus(status.value());
+		problema.setTitulo("Esta senha já foi cadastrada!");
 		problema.setDataHora(OffsetDateTime.now());
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
