@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wamk.picpay.dtos.TransferenciaDTO;
 import com.wamk.picpay.dtos.UsuarioInputDTO;
 import com.wamk.picpay.entities.Usuario;
+import com.wamk.picpay.services.AutorizacaoService;
 import com.wamk.picpay.services.UsuarioService;
 
 import jakarta.validation.Valid;
@@ -26,6 +27,9 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private AutorizacaoService autorizacaoService;
 	
 	@GetMapping
 	public ResponseEntity<List<Usuario>> listar(){
@@ -50,8 +54,8 @@ public class UsuarioController {
 	
 	@PostMapping("/transferencia")
 	public ResponseEntity<Object> transferir(@RequestBody TransferenciaDTO transferencia){
-		usuarioService.validarTransferencia(transferencia);
-		usuarioService.transferir(transferencia);
+		autorizacaoService.validarTransferencia(transferencia);
+		autorizacaoService.transferir(transferencia);
 		return ResponseEntity.ok("Transferência realizada com sucesso!");
 	}
 }
