@@ -55,6 +55,7 @@ public class UsuarioController {
 	@PostMapping("/transferencia")
 	public ResponseEntity<Object> transferir(@RequestBody TransferenciaDTO transferencia){
 		autorizacaoService.validarTransferencia(transferencia);
+		autorizacaoService.autorizarTransacao();
 		autorizacaoService.transferir(transferencia);
 		return ResponseEntity.ok("Transferência realizada com sucesso!");
 	}

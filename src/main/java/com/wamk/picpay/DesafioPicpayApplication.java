@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 import com.wamk.picpay.entities.Usuario;
 import com.wamk.picpay.enums.TipoUsuario;
 import com.wamk.picpay.repositories.UsuarioRepository;
 
 @SpringBootApplication
+@ComponentScan(basePackages = "com.wamk.picpay")
 public class DesafioPicpayApplication implements CommandLineRunner{
 	
 	@Autowired

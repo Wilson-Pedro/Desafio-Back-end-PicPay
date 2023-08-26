@@ -26,6 +26,7 @@ import com.wamk.picpay.services.exceptions.LojistaException;
 import com.wamk.picpay.services.exceptions.MesmoClienteException;
 import com.wamk.picpay.services.exceptions.SaldoInsuficienteException;
 import com.wamk.picpay.services.exceptions.SenhaJaCadastradoException;
+import com.wamk.picpay.services.exceptions.ValidacaoNaoAutorizadaException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
@@ -148,6 +149,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 
 		problema.setStatus(status.value());
 		problema.setTitulo("Esta senha já foi cadastrada!");
+		problema.setDataHora(OffsetDateTime.now());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+	}
+	
+	@ExceptionHandler(ValidacaoNaoAutorizadaException.class)
+	public ResponseEntity<Problema> validacaoNaoAutorizadaException(){
+		
+		Problema problema = new Problema();
+		
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		problema.setStatus(status.value());
+		problema.setTitulo("Transação não autorizada!");
 		problema.setDataHora(OffsetDateTime.now());
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);

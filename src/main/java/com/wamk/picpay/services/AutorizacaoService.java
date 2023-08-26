@@ -2,20 +2,29 @@ package com.wamk.picpay.services;
 
 import java.math.BigDecimal;
 
+import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.wamk.picpay.dtos.TransferenciaDTO;
 import com.wamk.picpay.enums.TipoUsuario;
+import com.wamk.picpay.responses.AuthorizationResponse;
 import com.wamk.picpay.services.exceptions.LojistaException;
 import com.wamk.picpay.services.exceptions.MesmoClienteException;
 import com.wamk.picpay.services.exceptions.SaldoInsuficienteException;
+import com.wamk.picpay.services.exceptions.ValidacaoNaoAutorizadaException;
 
 @Service
 public class AutorizacaoService {
 	
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
 	public void validarTransferencia(TransferenciaDTO transferencia) {
 		Long pagador = transferencia.getPagador();
@@ -43,5 +52,22 @@ public class AutorizacaoService {
 		usuarioReceptor.setId(transferencia.getReceptor());
 		usuarioService.save(usuarioPagador);
 		usuarioService.save(usuarioReceptor);
+	}
+
+	public void autorizarTransacao() {
+		if(verificarTransacao()) {
+			throw new ValidacaoNaoAutorizadaException("Transação não autorizada!");
+		}
+	}
+	
+	public boolean verificarTransacao() {
+		ResponseEntity<AuthorizationResponse> autorizacao = restTemplate.
+				getForEntity("https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6", AuthorizationResponse.class);
+		
+		AuthorizationResponse authorizationResponse = autorizacao.getBody();
+		
+		if(authorizationResponse != null && "OK".equals(autorizacao.getStatusCode()))
+			return true;
+		return false;
 	}
 }
