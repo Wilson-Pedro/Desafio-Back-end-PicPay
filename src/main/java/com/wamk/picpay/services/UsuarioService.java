@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wamk.picpay.dtos.UsuarioInputDTO;
+import com.wamk.picpay.dtos.UsuarioDTO;
 import com.wamk.picpay.entities.Usuario;
 import com.wamk.picpay.repositories.UsuarioRepository;
 import com.wamk.picpay.services.exceptions.CpfJaCadastradoException;
@@ -48,7 +48,7 @@ public class UsuarioService {
 		return usuarioRepository.existsBySenha(senha);
 	}
 	
-	public void validaCadastro(@Valid UsuarioInputDTO usuarioDTO) {
+	public void validaCadastro(@Valid UsuarioDTO usuarioDTO) {
 		if(existByCpf(usuarioDTO.getCpf()))
 			throw new CpfJaCadastradoException("Este CPF já estar cadastrado!");
 		else if(existByEmail(usuarioDTO.getEmail()))

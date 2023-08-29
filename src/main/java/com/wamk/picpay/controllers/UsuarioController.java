@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wamk.picpay.dtos.ComprovanteDTO;
 import com.wamk.picpay.dtos.TransferenciaDTO;
-import com.wamk.picpay.dtos.UsuarioInputDTO;
+import com.wamk.picpay.dtos.UsuarioDTO;
 import com.wamk.picpay.entities.Usuario;
 import com.wamk.picpay.services.AutorizacaoService;
+import com.wamk.picpay.services.ComprovanteService;
 import com.wamk.picpay.services.UsuarioService;
 
 import jakarta.validation.Valid;
@@ -31,6 +33,9 @@ public class UsuarioController {
 	@Autowired
 	private AutorizacaoService autorizacaoService;
 	
+	@Autowired
+	private ComprovanteService comprovanteService;
+	
 	@GetMapping
 	public ResponseEntity<List<Usuario>> listar(){
 		List<Usuario> list = usuarioService.findAll();
@@ -44,7 +49,7 @@ public class UsuarioController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Usuario> criarUsario(@Valid @RequestBody UsuarioInputDTO usuarioDTO){
+	public ResponseEntity<Usuario> criarUsario(@Valid @RequestBody UsuarioDTO usuarioDTO){
 		usuarioService.validaCadastro(usuarioDTO);
 		var usuario = new Usuario();
 		BeanUtils.copyProperties(usuarioDTO, usuario);
@@ -57,6 +62,8 @@ public class UsuarioController {
 		autorizacaoService.validarTransferencia(transferencia);
 		autorizacaoService.autorizarTransacao();
 		autorizacaoService.transferir(transferencia);
-		return ResponseEntity.ok("Transferência realizada com sucesso!");
+		ComprovanteDTO comprovante = comprovanteService.gerarComprovante(transferencia);
+		
+		return ResponseEntity.ok(comprovante);
 	}
 }

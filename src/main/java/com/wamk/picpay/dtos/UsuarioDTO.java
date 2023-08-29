@@ -8,7 +8,7 @@ import com.wamk.picpay.enums.TipoUsuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class UsuarioInputDTO implements Serializable{
+public class UsuarioDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@NotBlank(message = "nome é obrigatório")
@@ -29,7 +29,7 @@ public class UsuarioInputDTO implements Serializable{
 	@NotNull(message = "tipoUsuario é obrigatório")
 	private TipoUsuario tipoUsuario;
 	
-	public UsuarioInputDTO() {
+	public UsuarioDTO() {
 	}
 
 	public String getNome() {
