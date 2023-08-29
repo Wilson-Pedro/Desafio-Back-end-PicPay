@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wamk.picpay.dtos.UsuarioDTO;
+import com.wamk.picpay.dtos.UsuarioMinDTO;
 import com.wamk.picpay.entities.Usuario;
 import com.wamk.picpay.repositories.UsuarioRepository;
 import com.wamk.picpay.services.exceptions.CpfJaCadastradoException;
@@ -27,8 +28,9 @@ public class UsuarioService {
 		usuarioRepository.save(usuario);
 	}
 
-	public List<Usuario> findAll() {
-		return usuarioRepository.findAll();
+	public List<UsuarioMinDTO> findAll() {
+		List<Usuario> list = usuarioRepository.findAll();
+		return list.stream().map(x -> new UsuarioMinDTO(x)).toList();
 	}
 
 	public Usuario findById(Long usuarioId) {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wamk.picpay.dtos.ComprovanteDTO;
 import com.wamk.picpay.dtos.TransferenciaDTO;
 import com.wamk.picpay.dtos.UsuarioDTO;
+import com.wamk.picpay.dtos.UsuarioMinDTO;
 import com.wamk.picpay.entities.Usuario;
 import com.wamk.picpay.services.AutorizacaoService;
 import com.wamk.picpay.services.ComprovanteService;
@@ -37,8 +38,8 @@ public class UsuarioController {
 	private ComprovanteService comprovanteService;
 	
 	@GetMapping
-	public ResponseEntity<List<Usuario>> listar(){
-		List<Usuario> list = usuarioService.findAll();
+	public ResponseEntity<List<UsuarioMinDTO>> listar(){
+		List<UsuarioMinDTO> list = usuarioService.findAll();
 		return ResponseEntity.ok(list);
 	}
 	
