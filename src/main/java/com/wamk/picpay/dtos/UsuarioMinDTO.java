@@ -2,10 +2,12 @@ package com.wamk.picpay.dtos;
 
 import java.io.Serializable;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.wamk.picpay.entities.Usuario;
 import com.wamk.picpay.enums.TipoUsuario;
 
-public class UsuarioMinDTO implements Serializable{
+public class UsuarioMinDTO extends RepresentationModel<UsuarioMinDTO> implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
