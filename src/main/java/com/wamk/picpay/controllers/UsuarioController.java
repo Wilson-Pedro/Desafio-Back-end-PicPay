@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,13 +38,14 @@ public class UsuarioController {
 	
 	@GetMapping
 	public ResponseEntity<List<UsuarioMinDTO>> listar(){
-		List<UsuarioMinDTO> list = usuarioService.findAll();
+		List<Usuario> list = usuarioService.findAll();
+		List<UsuarioMinDTO> listDto = list.stream().map(x -> new UsuarioMinDTO(x)).toList();
 		if(!list.isEmpty()) 
-			for(UsuarioMinDTO usuario : list) {
+			for(UsuarioMinDTO usuario : listDto) {
 				Long id = usuario.getId();
 				usuario.add(linkTo(methodOn(UsuarioController.class).findById(id)).withSelfRel());
 			}
-		return ResponseEntity.ok(list);
+		return ResponseEntity.ok(listDto);
 	}
 	
 	@GetMapping("/{usuarioId}")
@@ -57,6 +59,12 @@ public class UsuarioController {
 	public ResponseEntity<Usuario> criarUsario(@Valid @RequestBody UsuarioDTO usuarioDTO){
 		Usuario usuario = usuarioService.save(new Usuario(usuarioDTO));
 		return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
+	}
+	
+	@DeleteMapping("/{usuarioId}")
+	public ResponseEntity<Void> delete(@PathVariable Long usuarioId){
+		usuarioService.delete(usuarioId);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PostMapping("/transferencia")

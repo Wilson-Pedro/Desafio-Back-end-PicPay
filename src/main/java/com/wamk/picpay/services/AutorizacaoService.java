@@ -31,11 +31,11 @@ public class AutorizacaoService {
 		var usuarioPagador = usuarioService.findById(transferencia.getPagador());
 		var usuarioReceptor = usuarioService.findById(transferencia.getReceptor());
 		
-		BigDecimal dinheiroDoPagador = usuarioPagador.getDinheiro().subtract(transferencia.getValor());
-		BigDecimal dinheiroDoReceptor = usuarioReceptor.getDinheiro().add(transferencia.getValor());
+		BigDecimal dinheiroDoPagador = usuarioPagador.getSaldo().subtract(transferencia.getValor());
+		BigDecimal dinheiroDoReceptor = usuarioReceptor.getSaldo().add(transferencia.getValor());
 		
-		usuarioPagador.setDinheiro(dinheiroDoPagador);
-		usuarioReceptor.setDinheiro(dinheiroDoReceptor);
+		usuarioPagador.setSaldo(dinheiroDoPagador);
+		usuarioReceptor.setSaldo(dinheiroDoReceptor);
 		usuarioPagador.setId(transferencia.getPagador());
 		usuarioReceptor.setId(transferencia.getReceptor());
 		
@@ -48,8 +48,8 @@ public class AutorizacaoService {
 		Long receptor = transferencia.getReceptor();
 		
 		var usuarioPagador = usuarioService.findById(pagador);
-		int comparacao = transferencia.getValor().compareTo(usuarioPagador.getDinheiro());
-		int saldoZero = usuarioPagador.getDinheiro().compareTo(BigDecimal.ZERO);
+		int comparacao = transferencia.getValor().compareTo(usuarioPagador.getSaldo());
+		int saldoZero = usuarioPagador.getSaldo().compareTo(BigDecimal.ZERO);
 		
 		if(pagador == receptor) 
 			throw new MesmoClienteException("Você não pode transferir dinheiro para você mesmo!");

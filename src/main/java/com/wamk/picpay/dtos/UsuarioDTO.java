@@ -24,8 +24,8 @@ public class UsuarioDTO implements Serializable{
 	@NotBlank(message = "senha é obrigatório")
 	private String senha;
 	
-	@NotNull(message = "dinheiro não pode ser null")
-	private BigDecimal dinheiro;
+	@NotNull(message = "saldo não pode ser null")
+	private BigDecimal saldo;
 	
 	@NotNull(message = "tipoUsuario é obrigatório")
 	private TipoUsuario tipoUsuario;
@@ -38,7 +38,7 @@ public class UsuarioDTO implements Serializable{
 		cpf = usuario.getCpf();
 		email = usuario.getEmail();
 		senha = usuario.getSenha();
-		dinheiro = usuario.getDinheiro();
+		saldo = usuario.getSaldo();
 		tipoUsuario = usuario.getTipoUsuario();
 	}
 
@@ -74,12 +74,12 @@ public class UsuarioDTO implements Serializable{
 		this.senha = senha;
 	}
 
-	public BigDecimal getDinheiro() {
-		return dinheiro;
+	public BigDecimal getSaldo() {
+		return saldo;
 	}
 
-	public void setDinheiro(BigDecimal dinheiro) {
-		this.dinheiro = dinheiro;
+	public void setSaldo(BigDecimal saldo) {
+		this.saldo = saldo;
 	}
 
 	public TipoUsuario getTipoUsuario() {

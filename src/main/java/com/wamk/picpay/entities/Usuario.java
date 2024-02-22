@@ -35,29 +35,29 @@ public class Usuario extends RepresentationModel<Usuario> implements Serializabl
 	
 	private String senha;
 	
-	private BigDecimal dinheiro;
+	private BigDecimal saldo;
 	
 	private TipoUsuario tipoUsuario;
 	
 	public Usuario() {
 	}
-
-	public Usuario(Long id, String nome, String cpf, String email, String senha, BigDecimal dinheiro, TipoUsuario tipoUsuario) {
+	
+	public Usuario(Long id, String nome, String cpf, String email, String senha, BigDecimal saldo, TipoUsuario tipoUsuario) {
 		this.id = id;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.email = email;
 		this.senha = senha;
-		this.dinheiro = dinheiro;
+		this.saldo = saldo;
 		this.tipoUsuario = tipoUsuario;
 	}
-	
+
 	public Usuario(UsuarioDTO dto) {
 		nome = dto.getNome();
 		cpf = dto.getCpf();
 		email = dto.getEmail();
 		senha = dto.getSenha();
-		dinheiro = dto.getDinheiro();
+		saldo = dto.getSaldo();
 		tipoUsuario = dto.getTipoUsuario();
 	}
 
@@ -101,12 +101,12 @@ public class Usuario extends RepresentationModel<Usuario> implements Serializabl
 		this.senha = senha;
 	}
 
-	public BigDecimal getDinheiro() {
-		return dinheiro;
+	public BigDecimal getSaldo() {
+		return saldo;
 	}
 
-	public void setDinheiro(BigDecimal dinheiro) {
-		this.dinheiro = dinheiro;
+	public void setSaldo(BigDecimal saldo) {
+		this.saldo = saldo;
 	}
 
 	public TipoUsuario getTipoUsuario() {
