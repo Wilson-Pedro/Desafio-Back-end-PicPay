@@ -6,8 +6,10 @@ import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.wamk.picpay.dtos.UsuarioDTO;
 import com.wamk.picpay.enums.TipoUsuario;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,8 +27,10 @@ public class Usuario extends RepresentationModel<Usuario> implements Serializabl
 	
 	private String nome;
 	
+	@Column(unique = true)
 	private String cpf;
 	
+	@Column(unique = true)
 	private String email;
 	
 	private String senha;
@@ -46,6 +50,15 @@ public class Usuario extends RepresentationModel<Usuario> implements Serializabl
 		this.senha = senha;
 		this.dinheiro = dinheiro;
 		this.tipoUsuario = tipoUsuario;
+	}
+	
+	public Usuario(UsuarioDTO dto) {
+		nome = dto.getNome();
+		cpf = dto.getCpf();
+		email = dto.getEmail();
+		senha = dto.getSenha();
+		dinheiro = dto.getDinheiro();
+		tipoUsuario = dto.getTipoUsuario();
 	}
 
 	public Long getId() {

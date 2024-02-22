@@ -3,6 +3,7 @@ package com.wamk.picpay.dtos;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import com.wamk.picpay.entities.Usuario;
 import com.wamk.picpay.enums.TipoUsuario;
 
 import jakarta.validation.constraints.NotBlank;
@@ -30,6 +31,15 @@ public class UsuarioDTO implements Serializable{
 	private TipoUsuario tipoUsuario;
 	
 	public UsuarioDTO() {
+	}
+	
+	public UsuarioDTO(Usuario usuario) {
+		nome = usuario.getNome();
+		cpf = usuario.getCpf();
+		email = usuario.getEmail();
+		senha = usuario.getSenha();
+		dinheiro = usuario.getDinheiro();
+		tipoUsuario = usuario.getTipoUsuario();
 	}
 
 	public String getNome() {

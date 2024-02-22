@@ -15,8 +15,6 @@ import com.wamk.picpay.services.exceptions.EmailJaCadastradoException;
 import com.wamk.picpay.services.exceptions.EntidadeNaoEncontradaException;
 import com.wamk.picpay.services.exceptions.SenhaJaCadastradoException;
 
-import jakarta.validation.Valid;
-
 @Service
 public class UsuarioService {
 
@@ -24,8 +22,9 @@ public class UsuarioService {
 	private UsuarioRepository usuarioRepository;
 	
 	@Transactional
-	public void save(Usuario usuario) {
-		usuarioRepository.save(usuario);
+	public Usuario save(Usuario usuario) {
+		validaCadastro(new UsuarioDTO(usuario));
+		return usuarioRepository.save(usuario);
 	}
 
 	public List<UsuarioMinDTO> findAll() {
@@ -34,8 +33,8 @@ public class UsuarioService {
 	}
 
 	public Usuario findById(Long usuarioId) {
-		return usuarioRepository.findById(usuarioId)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado!"));
+		return usuarioRepository.findById(usuarioId).orElseThrow(
+				() -> new EntidadeNaoEncontradaException("Usuário não encontrado!"));
 	}
 	
 	public boolean existByCpf(String cpf) {
@@ -50,11 +49,13 @@ public class UsuarioService {
 		return usuarioRepository.existsBySenha(senha);
 	}
 	
-	public void validaCadastro(@Valid UsuarioDTO usuarioDTO) {
+	public void validaCadastro(UsuarioDTO usuarioDTO) {
 		if(existByCpf(usuarioDTO.getCpf()))
 			throw new CpfJaCadastradoException("Este CPF já estar cadastrado!");
+		
 		else if(existByEmail(usuarioDTO.getEmail()))
 			throw new EmailJaCadastradoException("Este email já estar cadastrado!");
+		
 		else if(existBySenha(usuarioDTO.getSenha()))
 			throw new SenhaJaCadastradoException("Esta senha já estar cadastrado!");
 	}
