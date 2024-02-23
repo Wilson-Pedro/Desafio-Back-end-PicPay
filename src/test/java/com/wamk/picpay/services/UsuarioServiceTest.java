@@ -28,19 +28,13 @@ class UsuarioServiceTest {
 	@Autowired
 	UsuarioRepository usuarioRepository;
 	
-	
 	Usuario usuario = new Usuario();
 	
 	@BeforeEach
 	void setUp() {
 		usuarioRepository.deleteAll();
 		
-		usuario.setNome("Wilson");
-		usuario.setCpf("9816923456");
-		usuario.setEmail("wilson@gmail.com");
-		usuario.setSenha("1234567");
-		usuario.setSaldo(new BigDecimal(1000.0));
-		usuario.setTipoUsuario(TipoUsuario.COMUM);
+		usuario = new Usuario(null, "Wilson", "9816923456", "wilson@gmail.com", "1234567", new BigDecimal(1000.0), TipoUsuario.COMUM);
 	}
 	
 	@Test

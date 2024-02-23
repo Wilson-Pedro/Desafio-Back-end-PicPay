@@ -12,7 +12,6 @@ import com.wamk.picpay.repositories.UsuarioRepository;
 import com.wamk.picpay.services.exceptions.CpfJaCadastradoException;
 import com.wamk.picpay.services.exceptions.EmailJaCadastradoException;
 import com.wamk.picpay.services.exceptions.EntidadeNaoEncontradaException;
-import com.wamk.picpay.services.exceptions.SenhaJaCadastradoException;
 
 @Service
 public class UsuarioService {
@@ -35,27 +34,12 @@ public class UsuarioService {
 				() -> new EntidadeNaoEncontradaException("Usuário não encontrado!"));
 	}
 	
-	public boolean existByCpf(String cpf) {
-		return usuarioRepository.existsByCpf(cpf);
-	}
-	
-	public boolean existByEmail(String email) {
-		return usuarioRepository.existsByEmail(email);
-	}
-	
-	public boolean existBySenha(String senha) {
-		return usuarioRepository.existsBySenha(senha);
-	}
-	
 	public void validaCadastro(UsuarioDTO usuarioDTO) {
-		if(existByCpf(usuarioDTO.getCpf()))
+		if(usuarioRepository.existsByCpf(usuarioDTO.getCpf()))
 			throw new CpfJaCadastradoException("Este CPF já estar cadastrado!");
 		
-		else if(existByEmail(usuarioDTO.getEmail()))
+		else if(usuarioRepository.existsByEmail(usuarioDTO.getEmail()))
 			throw new EmailJaCadastradoException("Este email já estar cadastrado!");
-		
-		else if(existBySenha(usuarioDTO.getSenha()))
-			throw new SenhaJaCadastradoException("Esta senha já estar cadastrado!");
 	}
 
 	public void delete(Long usuarioId) {

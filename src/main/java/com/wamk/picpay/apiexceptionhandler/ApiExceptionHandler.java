@@ -25,7 +25,6 @@ import com.wamk.picpay.services.exceptions.EntidadeNaoEncontradaException;
 import com.wamk.picpay.services.exceptions.LojistaException;
 import com.wamk.picpay.services.exceptions.MesmoClienteException;
 import com.wamk.picpay.services.exceptions.SaldoInsuficienteException;
-import com.wamk.picpay.services.exceptions.SenhaJaCadastradoException;
 import com.wamk.picpay.services.exceptions.ValidacaoNaoAutorizadaException;
 
 @ControllerAdvice
@@ -135,20 +134,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 
 		problema.setStatus(status.value());
 		problema.setTitulo("Este email já foi cadastrado!");
-		problema.setDataHora(OffsetDateTime.now());
-		
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
-	}
-	
-	@ExceptionHandler(SenhaJaCadastradoException.class)
-	public ResponseEntity<Problema> senhaJaCadastradoException(){
-		
-		Problema problema = new Problema();
-		
-		HttpStatus status = HttpStatus.BAD_REQUEST;
-
-		problema.setStatus(status.value());
-		problema.setTitulo("Esta senha já foi cadastrada!");
 		problema.setDataHora(OffsetDateTime.now());
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
