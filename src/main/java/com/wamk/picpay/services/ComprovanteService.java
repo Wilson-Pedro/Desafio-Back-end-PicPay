@@ -19,7 +19,6 @@ public class ComprovanteService {
 	
 	public ComprovanteDTO gerarComprovante(TransferenciaDTO transferencia) {
 		autorizacaoService.validarTransferencia(transferencia);
-		autorizacaoService.autorizarTransacao();
 		autorizacaoService.transferir(transferencia);
 		
 		Long pagadorId = transferencia.getPagador();

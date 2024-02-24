@@ -17,11 +17,23 @@ public class TransferenciaDTO implements Serializable{
 		return valor;
 	}
 
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
+	}
+
 	public Long getPagador() {
 		return pagador;
 	}
 
+	public void setPagador(Long pagador) {
+		this.pagador = pagador;
+	}
+
 	public Long getReceptor() {
 		return receptor;
+	}
+
+	public void setReceptor(Long receptor) {
+		this.receptor = receptor;
 	}
 }

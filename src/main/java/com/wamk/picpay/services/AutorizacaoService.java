@@ -3,17 +3,14 @@ package com.wamk.picpay.services;
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.wamk.picpay.dtos.TransferenciaDTO;
 import com.wamk.picpay.enums.TipoUsuario;
-import com.wamk.picpay.responses.AuthorizationResponse;
+import com.wamk.picpay.repositories.UsuarioRepository;
 import com.wamk.picpay.services.exceptions.LojistaException;
 import com.wamk.picpay.services.exceptions.MesmoClienteException;
 import com.wamk.picpay.services.exceptions.SaldoInsuficienteException;
-import com.wamk.picpay.services.exceptions.ValidacaoNaoAutorizadaException;
 
 import jakarta.transaction.Transactional;
 
@@ -24,7 +21,7 @@ public class AutorizacaoService {
 	private UsuarioService usuarioService;
 	
 	@Autowired
-	private RestTemplate restTemplate;
+	private UsuarioRepository usuarioRepository;
 	
 	@Transactional
 	public void transferir(TransferenciaDTO transferencia) {
@@ -39,8 +36,8 @@ public class AutorizacaoService {
 		usuarioPagador.setId(transferencia.getPagador());
 		usuarioReceptor.setId(transferencia.getReceptor());
 		
-		usuarioService.save(usuarioPagador);
-		usuarioService.save(usuarioReceptor);
+		usuarioRepository.save(usuarioPagador);
+		usuarioRepository.save(usuarioReceptor);
 	}
 	
 	public void validarTransferencia(TransferenciaDTO transferencia) {
@@ -61,20 +58,21 @@ public class AutorizacaoService {
 			throw new LojistaException("Lojista não pode realizar transações!");
 	}
 
-	public void autorizarTransacao() {
-		if(verificarTransacao())
-			throw new ValidacaoNaoAutorizadaException("Transação não autorizada!");
-	}
-	
-	public boolean verificarTransacao() {
-		ResponseEntity<AuthorizationResponse> autorizacao = restTemplate.
-				getForEntity("https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6", AuthorizationResponse.class);
-		
-		AuthorizationResponse authorizationResponse = autorizacao.getBody();
-		
-		if(authorizationResponse != null && "OK".equals(autorizacao.getStatusCode()))
-			return true;
-		
-		return false;
-	}
+//	public void autorizarTransacao() {
+//		if(verificarTransacao())
+//			throw new ValidacaoNaoAutorizadaException("Transação não autorizada!");
+//	}
+//	
+//  PAGINA FORA DO AR
+//	public boolean verificarTransacao() {
+//		ResponseEntity<AuthorizationResponse> autorizacao = restTemplate.
+//				getForEntity("https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6", AuthorizationResponse.class);
+//		
+//		AuthorizationResponse authorizationResponse = autorizacao.getBody();
+//		
+//		if(authorizationResponse != null && "OK".equals(autorizacao.getStatusCode()))
+//			return true;
+//		
+//		return false;
+//	}
 }
