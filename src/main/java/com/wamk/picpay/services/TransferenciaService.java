@@ -15,14 +15,14 @@ import com.wamk.picpay.services.exceptions.SaldoInsuficienteException;
 import jakarta.transaction.Transactional;
 
 @Service
-public class AutorizacaoService {
+public class TransferenciaService {
 	
 	@Autowired
 	private UsuarioService usuarioService;
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
 	@Transactional
 	public void transferir(TransferenciaDTO transferencia) {
 		var usuarioPagador = usuarioService.findById(transferencia.getPagador());
@@ -57,22 +57,4 @@ public class AutorizacaoService {
 		else if(usuarioPagador.getTipoUsuario().equals(TipoUsuario.LOJISTA))
 			throw new LojistaException("Lojista não pode realizar transações!");
 	}
-
-//	public void autorizarTransacao() {
-//		if(verificarTransacao())
-//			throw new ValidacaoNaoAutorizadaException("Transação não autorizada!");
-//	}
-//	
-//  PAGINA FORA DO AR
-//	public boolean verificarTransacao() {
-//		ResponseEntity<AuthorizationResponse> autorizacao = restTemplate.
-//				getForEntity("https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6", AuthorizationResponse.class);
-//		
-//		AuthorizationResponse authorizationResponse = autorizacao.getBody();
-//		
-//		if(authorizationResponse != null && "OK".equals(autorizacao.getStatusCode()))
-//			return true;
-//		
-//		return false;
-//	}
 }

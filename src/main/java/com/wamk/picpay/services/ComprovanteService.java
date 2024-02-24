@@ -15,11 +15,11 @@ public class ComprovanteService {
 	private UsuarioService usuarioService;
 	
 	@Autowired
-	private AutorizacaoService autorizacaoService;
+	private TransferenciaService transferenciaService;
 	
 	public ComprovanteDTO gerarComprovante(TransferenciaDTO transferencia) {
-		autorizacaoService.validarTransferencia(transferencia);
-		autorizacaoService.transferir(transferencia);
+		transferenciaService.validarTransferencia(transferencia);
+		transferenciaService.transferir(transferencia);
 		
 		Long pagadorId = transferencia.getPagador();
 		Long receptorId = transferencia.getReceptor();
