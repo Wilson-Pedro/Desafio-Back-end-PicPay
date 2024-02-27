@@ -34,6 +34,7 @@ Temos 2 tipos de usuários, os comuns e lojistas, ambos têm carteira com dinhei
 
 ## Banco de dados
 -H2 
+-PostgresSQL
 
 ## Link do Desafio:
 https://github.com/PicPay/picpay-desafio-backend
