@@ -14,6 +14,7 @@ import com.wamk.picpay.entities.Usuario;
 import com.wamk.picpay.enums.TipoUsuario;
 import com.wamk.picpay.repositories.UsuarioRepository;
 import com.wamk.picpay.services.ComprovanteService;
+import com.wamk.picpay.services.TransferenciaService;
 import com.wamk.picpay.services.exceptions.LojistaException;
 import com.wamk.picpay.services.exceptions.MesmoClienteException;
 import com.wamk.picpay.services.exceptions.SaldoInsuficienteException;
@@ -22,7 +23,7 @@ import com.wamk.picpay.services.exceptions.SaldoInsuficienteException;
 class TransferenciaExceptionTest {
 	
 	@Autowired
-	ComprovanteService comprovanteService;
+	TransferenciaService transferenciaService;
 	
 	@Autowired
 	UsuarioRepository usuarioRepository;
@@ -48,7 +49,7 @@ class TransferenciaExceptionTest {
 		transferencia.setReceptor(receptorId);
 		transferencia.setValor(new BigDecimal(1000.0));
 		
-		assertThrows(MesmoClienteException.class, () -> comprovanteService.gerarComprovante(transferencia));
+		assertThrows(MesmoClienteException.class, () -> transferenciaService.validarTransferencia(transferencia));
 	}
 	
 	@Test
@@ -64,7 +65,7 @@ class TransferenciaExceptionTest {
 		transferencia.setReceptor(receptorId);
 		transferencia.setValor(new BigDecimal(2000.0));
 		
-		assertThrows(SaldoInsuficienteException.class, () -> comprovanteService.gerarComprovante(transferencia));
+		assertThrows(SaldoInsuficienteException.class, () -> transferenciaService.validarTransferencia(transferencia));
 	}
 	
 	@Test
@@ -80,7 +81,7 @@ class TransferenciaExceptionTest {
 		transferencia.setReceptor(receptorId);
 		transferencia.setValor(new BigDecimal(1000.0));
 		
-		assertThrows(LojistaException.class, () -> comprovanteService.gerarComprovante(transferencia));
+		assertThrows(LojistaException.class, () -> transferenciaService.validarTransferencia(transferencia));
 	}
 
 }
